@@ -21,31 +21,31 @@ type Voyage struct {
 	arrivalTime      sTime.Time
 }
 
-func (t Voyage) GetPrice() float64 {
-	return t.price
+func (v Voyage) GetPrice() float64 {
+	return v.price
 }
 
-func (t Voyage) GetDepTime() sTime.Time {
-	return t.departureTime
+func (v Voyage) GetDepTime() sTime.Time {
+	return v.departureTime
 }
 
-func (t Voyage) GetArrTime() sTime.Time {
-	return t.arrivalTime
+func (v Voyage) GetArrTime() sTime.Time {
+	return v.arrivalTime
 }
 
 func UnmarshalBytesToVoyage(data []byte) Voyage {
-	t := Voyage{}
+	v := Voyage{}
 	fields := strings.Split(string(data), ";")
 
-	t.number, _ = strconv.Atoi(fields[0])
-	t.departureStation, _ = strconv.Atoi(fields[1])
-	t.arrivalStation, _ = strconv.Atoi(fields[2])
-	t.price, _ = strconv.ParseFloat(fields[3], 32)
+	v.number, _ = strconv.Atoi(fields[0])
+	v.departureStation, _ = strconv.Atoi(fields[1])
+	v.arrivalStation, _ = strconv.Atoi(fields[2])
+	v.price, _ = strconv.ParseFloat(fields[3], 32)
 
-	t.departureTime.Set([]byte(fields[4]))
-	t.arrivalTime.Set([]byte(fields[5]))
+	v.departureTime.Set([]byte(fields[4]))
+	v.arrivalTime.Set([]byte(fields[5]))
 
-	return t
+	return v
 }
 
 var bytesPool = sync.Pool{

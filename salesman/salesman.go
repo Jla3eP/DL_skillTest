@@ -27,7 +27,7 @@ var (
 
 var (
 	CountTime = func(way []int, matrix train.Matrix) (weight, bool) {
-		if !validWay(way, matrix) {
+		if !isValid(way, matrix) {
 			return math.MaxFloat64, false
 		}
 
@@ -45,7 +45,7 @@ var (
 		return res, true
 	}
 	CountPrice = func(way []int, matrix train.Matrix) (weight, bool) {
-		if !validWay(way, matrix) {
+		if !isValid(way, matrix) {
 			return math.MaxFloat64, false
 		}
 
@@ -59,7 +59,7 @@ var (
 	}
 )
 
-func validWay(way []int, matrix train.Matrix) bool {
+func isValid(way []int, matrix train.Matrix) bool {
 	for i := range way {
 		if i+1 != len(way) { //is not last
 			if _, ok := matrix[way[i]][way[i+1]]; !ok {
@@ -85,7 +85,7 @@ func swapRandElements(swapper func(i int, j int)) {
 }
 
 func findValidWay(matrix train.Matrix, swapper func(i int, j int)) error {
-	for !validWay(currentWay, matrix) {
+	for !isValid(currentWay, matrix) {
 		if failCounter >= maxFails {
 			return errors.New("fail counter exceeded\n")
 		}
@@ -124,10 +124,9 @@ func AnnealingAlgorithm(minTemperature temperature, weightFunc weightCounter, ma
 		if iteration != 0 {
 			updateTemperature(&currentTemperature, iteration)
 		}
-		//fmt.Printf("t = %.2f\t w = %.2f\n", currentTemperature, currentWeight)
 		copy(resetCopy, currentWay)
 		swapRandElements(swapper)
-		if !validWay(currentWay, matrix) {
+		if !isValid(currentWay, matrix) {
 			err := findValidWay(matrix, swapper)
 			if err != nil {
 				return nil, err
